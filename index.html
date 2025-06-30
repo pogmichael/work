@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Michael Pogorzhelskiy – Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Michael Pogorzhelskiy – Design and Research, cross-functional. Portfolio, case studies, and contact.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Dashboard: quick config section in CSS -->
+  <header class="main-header">
+    <div class="header-left">
+      <span class="name">Michael Pogorzhelskiy</span>
+      <span class="subtitle">Design and Research, cross-functional</span>
+    </div>
+    <div class="header-right">
+      <a href="mailto:your@email.com" class="contact-link">CONTACT</a>
+      <span class="time" id="localtime" aria-label="Current time in Berlin"></span>
+    </div>
+  </header>
+  <main>
+    <section class="intro">
+      <span>Having worked in education, health and XR, I’ve helped companies let their people</span>
+      <button class="pill" data-case="Find the first job">Find the first job</button>
+    </section>
+    <section class="pills">
+      <button class="pill" data-case="Understand professions">Understand professions</button>
+      <button class="pill" data-case="Manage angry customers">Manage angry customers</button>
+      <button class="pill" data-case="Solar power their homes">Solar power their homes</button>
+      <button class="pill" data-case="Simulate an operating theatre">Simulate an operating theatre</button>
+      <button class="pill" data-case="Understand spatial UI for surgery">Understand spatial UI for surgery</button>
+      <button class="pill" data-case="Design a playful memory">Design a playful memory</button>
+    </section>
+  </main>
+  <!-- Modal overlay, hidden by default -->
+  <div id="modal" class="modal" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal" aria-label="Close overlay">
+        <!-- Inline SVG X -->
+        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><line x1="7" y1="7" x2="21" y2="21" stroke="currentColor" stroke-width="2"/><line x1="21" y1="7" x2="7" y2="21" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <h2 id="modal-title">Case Study</h2>
+      <div id="modal-body">
+        <p>This is a dummy case study overlay. Replace this text with your content.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    // CLOCK: shows CEST Berlin time, updates every minute
+    function updateClock() {
+      const timeElem = document.getElementById('localtime');
+      const berlinTime = new Date().toLocaleTimeString('de-DE', {
+        hour: '2-digit', minute: '2-digit', hour12: false,
+        timeZone: 'Europe/Berlin'
+      });
+      timeElem.textContent = berlinTime;
+    }
+    updateClock();
+    setInterval(updateClock, 60 * 1000);
+
+    // MODAL: open overlay with dummy content when pill is clicked
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    document.querySelectorAll('.pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        modalTitle.textContent = btn.dataset.case;
+        modalBody.innerHTML = '<p>This is a dummy case study overlay. Replace this text with your content for "' + btn.dataset.case + '".</p>';
+        modal.classList.add('active');
+        modal.focus();
+      });
+    });
+    document.getElementById('closeModal').addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+    // Allow closing modal with Escape key
+    modal.addEventListener('keydown', e => {
+      if (e.key === 'Escape') modal.classList.remove('active');
+    });
+    // Trap focus inside modal
+    modal.addEventListener('focusout', e => {
+      if (modal.classList.contains('active') && !modal.contains(e.relatedTarget)) {
+        modal.focus();
+      }
+    });
+  </script>
+</body>
+</html>
